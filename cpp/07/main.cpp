@@ -135,9 +135,9 @@ void part2(const string & fn) {
 }
 
 int main() {
-    part1("test_input");
+    //part1("test_input");
     part1("input");
-    part2("test_input");
+    //part2("test_input");
     part2("input");
     return 0;
 }
