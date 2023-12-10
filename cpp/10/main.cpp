@@ -11,6 +11,7 @@ bool ok(vector<string> & flr, int lastrow, int lastcol, int drow, int dcol) {
     if(nextrow < 0 || nextcol < 0 || nextrow >= flr.size() || nextcol >= flr[0].size()) 
         return false;
 
+    //this bit not needed except for starting position?
     if(drow == 1) { 
         return c == 'J' || c == 'L' || c=='|';
     } else if(drow == -1) {
