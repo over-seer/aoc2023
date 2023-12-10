@@ -1,3 +1,7 @@
+//WARNING the pipe type symbol for the starting position is
+//hard-coded in the main function - this might be different
+//for different inputs but can be trivially determined from 
+//inspection of the input 
 #include "aoc.h"
 
 using namespace std;
