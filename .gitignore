@@ -1,2 +1,4 @@
 cpp/*/a.out
+cpp/*/a.gnu
+cpp/*/a.clang
 rust/*/target
