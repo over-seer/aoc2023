@@ -110,117 +110,6 @@ void part1(const string & fn) {
     cout << fn << " day 10 part 1 answer = " << path.size()/2 << endl; 
 }
 
-//converts pipe type into 3x3 "wall" representation
-array<array<bool,3>,3> pipe_type_walls(char c) {
-   const array<array<bool,3>,3> none = {
-                array<bool,3>{false,false,false},
-                array<bool,3>{false,false,false},
-                array<bool,3>{false,false,false}
-   };
-
-   const array<array<bool,3>,3> acr = {
-        array<bool,3>{false,false,false},
-        array<bool,3>{ true, true, true},
-        array<bool,3>{false,false,false}
-   };
-
-   const array<array<bool,3>,3> upp = {
-        array<bool,3>{false, true,false},
-        array<bool,3>{false, true,false},
-        array<bool,3>{false, true,false}
-   };
-
-   const array<array<bool,3>,3> jay = {
-        array<bool,3>{false, true,false},
-        array<bool,3>{ true, true,false},
-        array<bool,3>{false,false,false}
-   };
-
-   const array<array<bool,3>,3> ell = {
-        array<bool,3>{false, true,false},
-        array<bool,3>{false, true, true},
-        array<bool,3>{false,false,false}
-   };
-
-   const array<array<bool,3>,3> eff = {
-        array<bool,3>{false,false,false},
-        array<bool,3>{false, true, true},
-        array<bool,3>{false, true,false}
-   };
-
-   const array<array<bool,3>,3> sev = {
-        array<bool,3>{false,false,false},
-        array<bool,3>{ true, true,false},
-        array<bool,3>{false, true,false}
-   };
-
-    switch(c) {
-        case '.':
-            return none;
-        case '-':
-            return acr;
-        case '|':
-            return upp;
-        case 'J':
-            return jay;
-        case 'L':
-            return ell;
-        case 'F':
-            return eff;
-        case '7':
-            return sev;
-        default:
-            throw runtime_error("bad pipe!");
-    }
-}
-    
-//converts mxn grid of pipe types to 3mx3n grid with with pipes becoming "walls"          
-auto detailed_pipes(const vector<string> & ip) {
-    vector<vector<bool>> pipes(ip.size()*3,vector<bool>(ip[0].size()*3,false));
-    for(size_t row = 0; row < ip.size(); row++) {
-        string s = ip[row];
-        for(size_t col = 0; col < s.size(); col++) {
-            char c = ip[row][col];
-            auto pipe = pipe_type_walls(c);
-            for(size_t i : {0,1,2}) {
-                for(size_t j : {0,1,2}) {
-                    size_t ii = row*3;
-                    size_t jj = col*3;
-                    pipes[ii+i][jj+j] = pipe[i][j];
-                }
-            }
-        }
-    }
-    return pipes;
-}
-
-
-//from starting point r0,c0, recursive search for unvisited locations
-//recursion terminates when neighbouring locations are already visited
-//(or pipes, which are represented as visited locations)
-void search(vector<vector<bool>> & visited, int r0, int c0) {
-    array<array<int,2>,4> dirs = {
-            array<int,2>{ 0, 1},
-            array<int,2>{ 0,-1},
-            array<int,2>{ 1, 0},
-            array<int,2>{-1, 0}
-    };
-
-    int nr = (int)visited.size();
-    int nc = (int)visited[0].size();
-
-    if(visited[r0][c0]) return;
-    else visited[r0][c0] = true;
-
-    for(auto [dr,dc] : dirs) {
-        int r = r0 + dr;
-        int c = c0 + dc;
-        if(r >= 0 && c >= 0 && r < nr  && c < nc) {
-            search(visited,r,c);
-        }
-    }
-}
-
 void part2(const string & fn, char replace_s) {
     auto ip = read_ip(fn);
 
@@ -244,45 +133,41 @@ void part2(const string & fn, char replace_s) {
     //replace starting symbol 'S' with actual pipe type
     ip[r][c] = replace_s;
 
-    //get the detailed 'wall' representation of the pipes
-    auto detailed = detailed_pipes(ip);
 
-    //fill in all accessible detailed locations outside the loop.
-    //now we've removed all junk pipes, everywhere outside loop
-    //should be reachable from top corner
-    search(detailed,0,0);
-
-    //loop over original coarser input grid and count as trapped if ALL
-    //nine detailed locations corresponding to the location have not been
-    //visited
-    size_t ans2 = 0;
-    for(int r = 0; r < nr; r++) {
-        for(int c = 0; c < nc; c++) {
-            bool is_trapped = true;
-            for(int ii : {0,1,2}) {
-                for(int jj : {0,1,2}) {
-                    if(detailed[r*3+ii][c*3+jj]) {
-                        is_trapped = false;
-                        break;
-                    }
+    size_t ans = 0;
+    for(string line : ip) {
+        bool is_out = true;
+        bool was_eff_not_ell;
+        for(char c : line) {
+            if(c == '.') {
+                if(!is_out) {
+                    ans++;
                 }
-                if(!is_trapped) break;
-            }
-            if(is_trapped) {
-                ip[r][c] = 'I';
-                ans2++;
+            } else if(c == '|') {
+                is_out = !is_out;
+            } else if(c == 'F') {
+                was_eff_not_ell = true;
+            } else if(c == 'L') {
+                was_eff_not_ell = false;
+            } else if(c == 'J') {
+                if(was_eff_not_ell) {
+                    is_out = !is_out;
+                }
+            } else if(c == '7') {
+                if(!was_eff_not_ell) {
+                    is_out = !is_out;
+                }
+            } else if(c == '-') {
+                //do nothing
             } else {
-                ip[r][c] = '.';
-
+                cout << c <<  endl;
+                throw runtime_error("bad symbol!");
             }
         }
     }
-
-    for(auto line : ip) {
-        //cout << line << endl;
-    }
-
-    cout << fn << " day 10 part 2 answer = " << ans2 << endl; 
+    cout << fn << " day 10 part 2 answer = " << ans << endl;
+    
+    exit(0);
     
 }
 
