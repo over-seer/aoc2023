@@ -84,12 +84,12 @@ void part1(const string & fn) {
         auto d = td[1][i];
         ans *= f(t,d);
     }
-    cout << fn << " day 6 part 1 ans = " << ans << endl;
+    cout << fn << " day 6 part 1 answer = " << ans << endl;
 }
 
 void part2(const string & fn) {
     auto [t,d] = parse2(fn);
-    cout << fn << " day 6 part 2 ans = " << f(t,d) << endl;
+    cout << fn << " day 6 part 2 answer = " << f(t,d) << endl;
 }
 
 int main() {
