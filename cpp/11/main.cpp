@@ -92,7 +92,7 @@ size_t day11(const string & fn, size_t offset) {
 
 int main() {
     //cout << "test_input " << " day 11 part 1 answer = " << day11("test_input",1) << endl;
-    cout << "input " << " day 11 part 1 answer = " << day11("input",1) << endl;
-    cout << "input " << " day 11 part 2 answer = " << day11("input",999999) << endl;
+    cout << "input day 11 part 1 answer = " << day11("input",1) << endl;
+    cout << "input day 11 part 2 answer = " << day11("input",999999) << endl;
     return 0;
 }
