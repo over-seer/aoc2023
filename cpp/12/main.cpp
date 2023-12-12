@@ -120,8 +120,7 @@ void part1(const string & fn) {
     auto ip = parse(fn);
 
     size_t ans = 0;
-    for(auto snos : ip) {
-        auto [s,nos] = snos;
+    for(auto [s,nos] : ip) {
         NumCombs num_combs(s,nos);
         size_t n = num_combs(0,0);
         ans += n;
