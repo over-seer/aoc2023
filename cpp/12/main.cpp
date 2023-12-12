@@ -48,8 +48,6 @@ optional<size_t> fits(const string & s, size_t i0, size_t n) {
     return {i};
 }
 
-vector<string> v;
-
 struct NumCombs {
     string s;
     vector<size_t> nos;
