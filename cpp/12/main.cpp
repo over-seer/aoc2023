@@ -85,9 +85,7 @@ struct NumCombs {
                     //recursive call to self
                     n += operator()(inext,next_block);
                     if(iblock == nos.size()) {
-                        //break;
-                        cache[{i0,n}] = n;
-                        return n;
+                        break;
                     }
                 }
             }
