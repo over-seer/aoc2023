@@ -9,7 +9,7 @@ auto next_dir(const vector<string> & mirrors, int row, int col, int dr, int dc) 
     int ncol = mirrors.at(0).size();
     //if(row < 0 || col < 0 || row >= nrow || col >= ncol) return result;
     //cout << "debug\n";
-    char sym = mirrors.at(row).at(col);
+    char sym = mirrors[row][col];
     if(sym == '.' || (sym == '|' && dc == 0) || (sym == '-' && dr == 0)) { // no change
         dr1 = dr;
         dc1 = dc;
@@ -29,7 +29,7 @@ auto next_dir(const vector<string> & mirrors, int row, int col, int dr, int dc) 
     return result;
 }
 
-void step(  set<array<int,4>> & log, 
+void step(  unordered_set<array<int,4>> & log, 
             const vector<string> & mirrors,
             int row,
             int col,
@@ -38,7 +38,7 @@ void step(  set<array<int,4>> & log,
     int nrow = mirrors.size();
     int ncol = mirrors.at(0).size();
     if(row < 0 || col < 0 || row >= nrow || col >= ncol) return;
-    //cout << row << "," << col << " " << mirrors.at(row).at(col) << " " << dr << "," << dc << " ";// << endl;
+    //cout << row << "," << col << " " << mirrors[row][col] << " " << dr << "," << dc << " ";// << endl;
     //cin.ignore();
     if(dr == 0 && dc == 0) return;
     if(log.contains({row,col,dr,dc})) return;
@@ -50,7 +50,7 @@ void step(  set<array<int,4>> & log,
 }
 
 size_t num_energized(const vector<string> & ip, int row, int col, int dr, int dc) {
-    set<array<int,4>> states;
+    unordered_set<array<int,4>> states;
     step(states,ip,row,col,dr,dc);
     set<array<int,2>> positions;
     for(auto [r,c,_r,_c] :states) positions.insert({r,c});

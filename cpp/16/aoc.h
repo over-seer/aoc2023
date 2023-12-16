@@ -10,6 +10,8 @@
 #include <array>
 #include <set>
 #include <map>
+#include <unordered_set>
+#include <unordered_map>
 #include <list>
 #include <utility>
 #include <tuple>
@@ -117,6 +119,30 @@ inline auto read_paragraph_ip(std::string s){
     }
     if(!para.empty()) result.push_back(para);
     return result;
+}
+
+template<class T>
+std::set<T> operator+=(std::set<T> & a, const std::set<T> & b) {
+    for(auto & k : b) {
+        a.insert(k);
+    }
+    return a;
+}
+
+namespace std {
+template <typename T, std::size_t N>
+struct hash<std::array<T,N>> {
+    std::size_t operator()(const std::array<T, N>& arr) const {
+        std::hash<T> hasher;
+        std::size_t hash_value = 0;
+        
+        for (const auto& element : arr) {
+            hash_value ^= hasher(element) + 0x9e3779b9 + (hash_value << 6) + (hash_value >> 2);
+        }
+
+        return hash_value;
+    }
+};
 }
 
 #endif
