@@ -68,10 +68,14 @@ void part2(const string & fn) {
     int ncol = ip.at(0).size();
 
     size_t ans2 = 0;
+
+    #pragma omp parallel for
     for(int i = 0; i < nrow; i++) {
         ans2 = max(ans2,num_energized(ip,i,0,0,1));
         ans2 = max(ans2,num_energized(ip,i,ncol - 1,0,-1));
     }
+
+    #pragma omp parallel for
     for(int i = 0; i < ncol; i++) {
         ans2 = max(ans2,num_energized(ip,0,i,1,0));
         ans2 = max(ans2,num_energized(ip,nrow-1,i,-1,0));
@@ -81,9 +85,9 @@ void part2(const string & fn) {
 }
 
 int main() {
-    part1("test_input");
+    //part1("test_input");
     part1("input");
-    part2("test_input");
+    //part2("test_input");
     part2("input");
     return 0;
 }
