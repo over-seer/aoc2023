@@ -94,7 +94,7 @@ void part1(const string & fn) {
 }
 
 int main() {
-    part1("test_input");
+    //part1("test_input");
     part1("input");
     return 0;
 }

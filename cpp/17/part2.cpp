@@ -135,7 +135,7 @@ void part2(const string & fn) {
 
     int ans2 = city.guess();
     for(auto i2 : city.sums) ans2 = min(i2.back().back(),ans2);
-    cout << fn << " day 17 part 1 answer = " << ans2 << endl;
+    cout << fn << " day 17 part 2 answer = " << ans2 << endl;
 }
 
 int main() {
